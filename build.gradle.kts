@@ -53,6 +53,9 @@ dependencies {
 	implementation("org.webjars:sockjs-client:1.5.1")  // 낮은 브라우저에서도 websocket 지원
 	implementation("org.webjars:stomp-websocket:2.3.4")  // stomp
 
+	// kotlin-logging
+	implementation("io.github.microutils:kotlin-logging:3.0.5")
+
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.mysql:mysql-connector-j")
