@@ -34,7 +34,7 @@ dependencies {
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.flywaydb:flyway-mysql")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.thymeleaf.extras:thymeleaf-extras-spring-security5")
+	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
 
 	// Swagger
 	implementation("org.springdoc:springdoc-openapi-ui:1.7.0")
@@ -53,10 +53,10 @@ dependencies {
 	implementation("org.webjars:sockjs-client:1.5.1")  // 낮은 브라우저에서도 websocket 지원
 	implementation("org.webjars:stomp-websocket:2.3.4")  // stomp
 
-	compileOnly("org.project-lombok:lombok")
+	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.mysql:mysql-connector-j")
-	annotationProcessor("org.project-lombok:lombok")
+	annotationProcessor("org.projectlombok:lombok")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
