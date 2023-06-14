@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  redis:
+    #    hostname: TODO 컨테이너 이름도 노출하면 안되나?
+    image: ${REDIS_IMAGE}  # 이미지 이름 노출 x
+    ports:
+      - "6379:6379"
+
+  app:
+    image: ${APP_IMAGE}  # 배포 시 이미지 이름 수정 필요
+    build: .
+    restart: always
+    ports:
+      - "${APP_LOCAL_PORT}:${APP_SERVER_PORT}"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}  # application-prod.yml 우선적으로 실행 -> application.yml 실행 (prod 파일과 겹치는 부분이 있다면 prod 가 덮어씌움)
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}  # rds 사용할 경우 endpoint
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+    env_file: # .gitignore 에 .env 적용 시 추가
+      - .env

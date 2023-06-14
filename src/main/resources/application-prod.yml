@@ -7,7 +7,7 @@ spring:
 
   data:
     redis:
-      host: redis  # 컨테이너 이름
+      host: redis  # Docker redis server 컨테이너 이름
       port: 6379
 
   flyway:
