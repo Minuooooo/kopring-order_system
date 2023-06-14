@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL}  # rds 사용할 경우 endpoint
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+  data:
+    redis:
+      host: redis  # 컨테이너 이름
+      port: 6379
+
+  flyway:
+    locations: classpath:/db/migration  # 마이그레이션 스크립트 위치
+    encoding: UTF-8  # 마이그레이션 스크립트 인코딩
+    check-location: false  # 마이그레이션 스크립트 실행 전 체크 여부
+    baseline-on-migration: true  # 스키마 초기화 여부
+
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none  # validate 사용하면 애플리케이션 로직에서 엔티티의 클래스나 필드가 변경될 경우 데이터베이스 스키마에도 적용되기 때문에 none 사용 권장
+    properties:
+      hibernate:
+        format_sql: true
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+  logging:
+    level:
+      root: INFO
