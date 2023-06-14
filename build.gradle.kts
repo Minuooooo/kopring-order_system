@@ -34,11 +34,30 @@ dependencies {
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.flywaydb:flyway-mysql")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
-	compileOnly("org.projectlombok:lombok")
+	implementation("org.thymeleaf.extras:thymeleaf-extras-spring-security5")
+
+	// Swagger
+	implementation("org.springdoc:springdoc-openapi-ui:1.7.0")
+
+	// JWT
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	implementation("org.jetbrains:annotations:24.0.1")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+	// AWS
+	implementation("io.awspring.cloud:spring-cloud-aws-core:2.4.4")
+
+	// Web socket
+	implementation("org.springframework.boot:spring-boot-starter-websocket")
+	implementation("org.webjars:sockjs-client:1.5.1")  // 낮은 브라우저에서도 websocket 지원
+	implementation("org.webjars:stomp-websocket:2.3.4")  // stomp
+
+	compileOnly("org.project-lombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.mysql:mysql-connector-j")
-	annotationProcessor("org.projectlombok:lombok")
+	annotationProcessor("org.project-lombok:lombok")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 }
