@@ -6,9 +6,6 @@ import org.springframework.web.client.RestTemplate
 
 @Configuration
 class ClientConfig {
-
     @Bean
-    fun restTemplate(): RestTemplate {
-        return RestTemplate()
-    }
+    fun restTemplate(): RestTemplate = RestTemplate()
 }
