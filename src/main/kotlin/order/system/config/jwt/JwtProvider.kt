@@ -20,14 +20,15 @@ private val log = KotlinLogging.logger {}
 
 @Component
 class JwtProvider(@Value("\${jwt.secret}") secretKey: String) {
+
+    private val key: Key
+
     companion object {
         private const val AUTHORITIES_KEY: String = "auth"
         private const val BEARER_TYPE: String = "bearer"
         private const val ACCESS_TOKEN_EXPIRE_TIME: Long = 1000 * 60 * 60 * 24;  // 1시간 * 24 = 24시간 (-Dev)
         private const val REFRESH_TOKEN_EXPIRE_TIME: Long = 1000 * 60 * 60 * 24 * 7;  // 7일
     }
-
-    private val key: Key
 
     init {
         this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey))
@@ -47,7 +48,7 @@ class JwtProvider(@Value("\${jwt.secret}") secretKey: String) {
         )
     }
 
-    fun getAuthentication(accessToken: String?): Authentication {
+    fun getAuthentication(accessToken: String): Authentication {
         // 토큰 복호화
         val claims = parseClaims(accessToken)
 
@@ -68,7 +69,7 @@ class JwtProvider(@Value("\${jwt.secret}") secretKey: String) {
         )
     }
 
-    fun validateToken(token: String?): Boolean {
+    fun validateToken(token: String): Boolean {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
@@ -86,9 +87,7 @@ class JwtProvider(@Value("\${jwt.secret}") secretKey: String) {
         return false;
     }
 
-    fun extractSubject(accessToken: String): String {
-        return parseClaims(accessToken).subject
-    }
+    fun extractSubject(accessToken: String): String = parseClaims(accessToken).subject
 
     fun generateAccessToken(authentication: Authentication, accessTokenExpiresIn: Date): String {
         // 권한들 가져오기
@@ -104,19 +103,16 @@ class JwtProvider(@Value("\${jwt.secret}") secretKey: String) {
                 .compact()
     }
 
-    fun generateRefreshToken(refreshTokenExpiresIn: Date): String {
-        // Refresh Token 생성
-        return Jwts.builder()
-                .setExpiration(refreshTokenExpiresIn)
-                .signWith(key, SignatureAlgorithm.HS512)
-                .compact();
-    }
+    fun generateRefreshToken(refreshTokenExpiresIn: Date): String =
+            Jwts.builder()
+                    .setExpiration(refreshTokenExpiresIn)
+                    .signWith(key, SignatureAlgorithm.HS512)
+                    .compact();
 
-    private fun parseClaims(accessToken: String?): Claims {
-        return try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).body;
-        } catch(e: ExpiredJwtException) {
-            e.claims
-        }
-    }
+    private fun parseClaims(accessToken: String): Claims =
+            try {
+                Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).body;
+            } catch (e: ExpiredJwtException) {
+                e.claims
+            }
 }

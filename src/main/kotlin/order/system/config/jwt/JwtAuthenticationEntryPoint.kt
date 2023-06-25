@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class JwtAuthenticationEntryPoint : AuthenticationEntryPoint {
     @Throws(IOException::class, ServletException::class)
-    override fun commence(request: HttpServletRequest?, response: HttpServletResponse?, authException: AuthenticationException?) {
+    override fun commence(request: HttpServletRequest, response: HttpServletResponse, authException: AuthenticationException) {
         // 유효한 자격 증명을 제공하지 않고 접근하려 할 때 401
-        response?.sendError(HttpServletResponse.SC_UNAUTHORIZED)
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED)
     }
 }

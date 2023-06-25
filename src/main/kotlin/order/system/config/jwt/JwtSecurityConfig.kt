@@ -8,7 +8,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 class JwtSecurityConfig(private val jwtProvider: JwtProvider) : SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>() {
 
     // JwtProvider 를 주입 받아서 JwtFilter 를 통해 Security 로직에 필터를 등록
-    override fun configure(http: HttpSecurity?) {
-        http?.addFilterBefore(JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter::class.java)
+    override fun configure(http: HttpSecurity) {
+        http.addFilterBefore(JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter::class.java)
     }
 }

@@ -32,12 +32,12 @@ class JwtFilter(private val jwtProvider: JwtProvider) : OncePerRequestFilter() {
     }
 
     // Request Header 에서 토큰 정보를 꺼내오기
-    private fun resolveToken(request: HttpServletRequest): String? {
+    private fun resolveToken(request: HttpServletRequest): String {
         val bearerToken = request.getHeader(AUTHENTICATION_HEADER)
 
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7)
         }
-        return null
+        return "nothing"
     }
 }

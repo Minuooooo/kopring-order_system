@@ -2,6 +2,6 @@ package order.system.domain.member.dto.sign
 
 
 data class TokenResponseDto(
-        private var accessToken: String,
-        private var refreshToken: String
+        private val accessToken: String,
+        private val refreshToken: String
 )

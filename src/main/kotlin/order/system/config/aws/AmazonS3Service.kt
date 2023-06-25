@@ -13,10 +13,12 @@ import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @Service
-class AmazonS3Service(private val amazonS3Client: AmazonS3) {
+class AmazonS3Service(
+        private val amazonS3Client: AmazonS3,
 
-    @Value("\${cloud.aws.s3.bucket}")
-    private var bucketName: String? = null
+        @Value("\${cloud.aws.s3.bucket}")
+        private val bucketName: String
+) {
 
     fun uploadFile(multipartFile: MultipartFile): String {
 
@@ -44,9 +46,8 @@ class AmazonS3Service(private val amazonS3Client: AmazonS3) {
         }
     }
 
-    private fun createFileName(fileName: String): String {
-        return UUID.randomUUID().toString() + getFileExtension(fileName)
-    }
+    private fun createFileName(fileName: String): String =
+            UUID.randomUUID().toString() + getFileExtension(fileName)
 
     private fun getFileExtension(fileName: String): String {
         val fileExtensionIndex = fileName.lastIndexOf(".")
