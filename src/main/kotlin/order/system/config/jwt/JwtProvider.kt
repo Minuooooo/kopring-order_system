@@ -19,7 +19,10 @@ import java.util.Date
 private val log = KotlinLogging.logger {}
 
 @Component
-class JwtProvider(@Value("\${jwt.secret}") secretKey: String) {
+class JwtProvider(
+        @Value("\${jwt.secret}")
+        private val secretKey: String
+) {
 
     private val key: Key
 
