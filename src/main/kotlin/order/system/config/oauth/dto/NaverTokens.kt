@@ -2,9 +2,9 @@ package order.system.config.oauth.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-class NaverTokens(
+data class NaverTokens(
         @JsonProperty("access_token")
-        private val accessToken: String,
+        val accessToken: String,
 
         @JsonProperty("refresh_token")
         private val refreshToken: String,
