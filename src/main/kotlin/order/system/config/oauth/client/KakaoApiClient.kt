@@ -50,7 +50,7 @@ class KakaoApiClient(
         return response?.accessToken
     }
 
-    override fun requestOAuthInfo(accessToken: String): OAuthInfoResponse? {
+    override fun requestOAuthInfo(accessToken: String?): OAuthInfoResponse? {
 
         val url = "$apiUrl/v2/user/me"
 
