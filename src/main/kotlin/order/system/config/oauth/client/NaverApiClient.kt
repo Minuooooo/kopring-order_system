@@ -60,7 +60,7 @@ class NaverApiClient(
 
         val httpHeaders = HttpHeaders()
         httpHeaders.contentType = APPLICATION_FORM_URLENCODED
-        httpHeaders.set("Authorization", "Bearer $accessToken")
+        httpHeaders["Authorization"] = "Bearer $accessToken"
 
         val body: MultiValueMap<String, String> = LinkedMultiValueMap()
         val request = HttpEntity(body, httpHeaders)

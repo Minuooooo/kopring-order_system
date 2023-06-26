@@ -56,7 +56,7 @@ class KakaoApiClient(
 
         val httpHeaders = HttpHeaders()
         httpHeaders.contentType = APPLICATION_FORM_URLENCODED
-        httpHeaders.set("Authorization", "Bearer $accessToken")
+        httpHeaders["Authorization"] = "Bearer $accessToken"
 
         val body: MultiValueMap<String, String> = LinkedMultiValueMap()
         body.add("property_keys", "[\"kakao_account_email\", \"kakao_account.profile\"]")

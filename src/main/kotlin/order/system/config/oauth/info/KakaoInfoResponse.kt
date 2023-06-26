@@ -10,12 +10,15 @@ class KakaoInfoResponse(
         private val kakaoAccount: KakaoAccount
 ) : OAuthInfoResponse {
     companion object {
-        class KakaoAccount(
+
+        @JsonIgnoreProperties(ignoreUnknown = true)
+        data class KakaoAccount(
                 val profile: KakaoProfile,
                 val email: String
         )
 
-        class KakaoProfile(val nickname: String)
+        @JsonIgnoreProperties(ignoreUnknown = true)
+        data class KakaoProfile(val nickname: String)
     }
 
     override fun getEmail(): String = kakaoAccount.email
