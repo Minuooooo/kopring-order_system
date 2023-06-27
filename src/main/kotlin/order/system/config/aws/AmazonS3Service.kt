@@ -46,8 +46,7 @@ class AmazonS3Service(
         }
     }
 
-    private fun createFileName(fileName: String): String =
-            UUID.randomUUID().toString() + getFileExtension(fileName)
+    private fun createFileName(fileName: String): String = UUID.randomUUID().toString() + getFileExtension(fileName)
 
     private fun getFileExtension(fileName: String): String {
         val fileExtensionIndex = fileName.lastIndexOf(".")

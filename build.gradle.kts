@@ -8,8 +8,6 @@ plugins {
 	kotlin("jvm") version kotlinVersion
 	kotlin("plugin.spring") version kotlinVersion
 	kotlin("plugin.jpa") version kotlinVersion
-	kotlin("plugin.allopen") version kotlinVersion  // Hibernate Lazy loading (Proxy 상속)
-	kotlin("plugin.noarg") version kotlinVersion  // Hibernate -> Entity 생성
 }
 
 group = "order"
@@ -81,13 +79,7 @@ tasks.withType<Test> {
 }
 
 allOpen {
-	annotation("jakarta.persistence.Entity")
-	annotation("jakarta.persistence.Embeddable")
-	annotation("jakarta.persistence.MappedSuperclass")
-}
-
-noArg {
-	annotation("jakarta.persistence.Entity")
-	annotation("jakarta.persistence.Embeddable")
-	annotation("jakarta.persistence.MappedSuperclass")
+	annotation("javax.persistence.Entity")
+	annotation("javax.persistence.Embeddable")
+	annotation("javax.persistence.MappedSuperclass")
 }
