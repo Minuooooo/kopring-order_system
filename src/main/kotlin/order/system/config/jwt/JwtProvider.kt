@@ -23,9 +23,6 @@ class JwtProvider(
         @Value("\${jwt.secret}")
         private val secretKey: String
 ) {
-
-    private val key: Key
-
     companion object {
         private const val AUTHORITIES_KEY: String = "auth"
         private const val BEARER_TYPE: String = "bearer"
@@ -33,9 +30,7 @@ class JwtProvider(
         private const val REFRESH_TOKEN_EXPIRE_TIME: Long = 1000 * 60 * 60 * 24 * 7;  // 7일
     }
 
-    init {
-        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey))
-    }
+    private val key: Key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey))
 
     fun generateTokenDto(authentication: Authentication): TokenDto {
 

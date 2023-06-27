@@ -5,17 +5,28 @@ import javax.persistence.*
 
 @Entity
 class Member(
-        private var username: String,
-        private var password: String,
-        private var name: String,
+        var username: String,
+        var password: String,
+        var name: String,
         @Embedded
-        private var address: Address,
-        private var profileImageUrl: String,
-        private var favorite: Int,
+        var address: Address,
+        var profileImageUrl: String,
+        var favorite: Int,
         @Enumerated(EnumType.STRING)
-        private var authority: Authority
+        var authority: Authority
 ) : BaseEntity() {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private val id: Long = 0L
+    val id: Long = 0L
+
+    fun changeProfileImageUrl(profileImageUrl: String): String {
+        this.profileImageUrl = profileImageUrl
+        return this.profileImageUrl
+    }
+
+    fun editMember(name: String, address: Address) {
+        this.name = name
+        this.address = address
+    }
 }
