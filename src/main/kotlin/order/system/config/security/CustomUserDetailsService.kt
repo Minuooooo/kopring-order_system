@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service
 import kotlin.jvm.Throws
 
 @Service
-class CustomUserDetailsService(
-        private val memberRepository: MemberRepository,
-        private val passwordEncoder: PasswordEncoder
-) : UserDetailsService {
+class CustomUserDetailsService(private val memberRepository: MemberRepository) : UserDetailsService {
 
     // AuthenticationManagerBuilder.getObject().authenticated() 실행할 때 호출
     @Throws(UsernameNotFoundException::class)
