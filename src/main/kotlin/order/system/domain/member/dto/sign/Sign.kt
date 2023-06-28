@@ -1,5 +1,6 @@
 package order.system.domain.member.dto.sign
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import io.swagger.v3.oas.annotations.media.Schema
 import order.system.domain.member.entity.Address
 import order.system.domain.member.entity.Authority
@@ -72,4 +73,5 @@ data class SignInRequestDto(
                 UsernamePasswordAuthenticationToken(username, member.id)
 }
 
-data class SignInResponseDto(val email: String)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class SignInResponseDtoBySocial(val email: String?)
