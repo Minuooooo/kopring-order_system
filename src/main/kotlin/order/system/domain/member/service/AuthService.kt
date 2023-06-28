@@ -10,6 +10,7 @@ import order.system.domain.member.entity.Member
 import order.system.domain.member.repository.MemberRepository
 import order.system.exception.situation.MemberNotFoundException
 import order.system.exception.situation.UsernameAlreadyExistsException
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.core.Authentication
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -40,11 +41,19 @@ class AuthService(
 
     fun signIn(req: SignInRequestDto): TokenResponseDto =
             authorize(
-                    req,
-                    memberRepository.findByUsername(req.username)
-                            ?.id
-                            ?: throw MemberNotFoundException()
+                    req.username,
+                    getMemberId(req.username)
             )
+
+    fun signInWithSocial(oAuthLoginParams: OAuthLoginParams): TokenResponseDto {
+
+        val username: String? = requestOAuthInfoService.request(oAuthLoginParams)?.getEmail()
+
+        return authorize(
+                username,
+                getMemberId(username)
+        )
+    }
 
     fun logout(member: Member) {
         redisService.deleteValues("RT: ${member.username}")
@@ -55,9 +64,14 @@ class AuthService(
             throw UsernameAlreadyExistsException(usernameToValidate)
     }
 
-    private fun authorize(signInRequestDto: SignInRequestDto, memberId: Long): TokenResponseDto {
-        val authentication: Authentication = authenticationManagerBuilder.`object`.authenticate(signInRequestDto.toAuthentication(memberId))
-        val foundRefreshToken: String? = redisService.getValues("RT: ${signInRequestDto.username}")
+    private fun getMemberId(username: String?): Long =
+            memberRepository.findByUsername(username)
+                    ?.id
+                    ?: throw MemberNotFoundException()
+
+    private fun authorize(username: String?, memberId: Long): TokenResponseDto {
+        val authentication: Authentication = authenticationManagerBuilder.`object`.authenticate(UsernamePasswordAuthenticationToken(username, memberId))
+        val foundRefreshToken: String? = redisService.getValues("RT: $username")
 
         if (!StringUtils.hasText(foundRefreshToken)) {  // 로그인한 유저의 refresh token 이 존재하지 않거나 만료되었을 때
             val tokenDto: TokenDto = getReadyForAuthorize(authentication)
