@@ -69,8 +69,8 @@ data class SignInRequestDto(
         @Schema(description = "비밀번호", defaultValue = "test1234!")
         val password: String
 ) {
-        fun toAuthentication(member: Member): UsernamePasswordAuthenticationToken =
-                UsernamePasswordAuthenticationToken(username, member.id)
+        fun toAuthentication(memberId: Long): UsernamePasswordAuthenticationToken =
+                UsernamePasswordAuthenticationToken(username, memberId)
 }
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

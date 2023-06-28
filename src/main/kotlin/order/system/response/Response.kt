@@ -16,16 +16,8 @@ data class Response(
         val result: Any?
 ) {
     companion object {
-        fun success(message: String): Response {
-            return Response(true, OK.value(), message, null);
-        }
-
-        fun success(message: String, data: Any): Response {
-            return Response(true, OK.value(), message, data);
-        }
-
-        fun failure(status: HttpStatus, message: String): Response {
-            return Response(false, status.value(), message, null);
-        }
+        fun success(message: String): Response = Response(true, OK.value(), message, null);
+        fun success(message: String, data: Any): Response = Response(true, OK.value(), message, data);
+        fun failure(status: HttpStatus, message: String): Response = Response(false, status.value(), message, null);
     }
 }

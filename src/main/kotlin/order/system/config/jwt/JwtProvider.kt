@@ -33,13 +33,12 @@ class JwtProvider(
 
     fun generateTokenDto(authentication: Authentication): TokenDto {
 
-        val now = Date().time
-        val accessTokenExpiresIn = Date(now + ACCESS_TOKEN_EXPIRE_TIME)
+        val now: Long = Date().time
         val refreshTokenExpiresIn = Date(now + REFRESH_TOKEN_EXPIRE_TIME)
 
         return TokenDto(
                 grantType = BEARER_TYPE,
-                accessToken = generateAccessToken(authentication, accessTokenExpiresIn),
+                accessToken = generateAccessToken(authentication, now),
                 refreshToken = generateRefreshToken(refreshTokenExpiresIn),
                 refreshTokenExpiresIn = refreshTokenExpiresIn.time
         )
@@ -86,7 +85,7 @@ class JwtProvider(
 
     fun extractSubject(accessToken: String): String = parseClaims(accessToken).subject
 
-    fun generateAccessToken(authentication: Authentication, accessTokenExpiresIn: Date): String {
+    fun generateAccessToken(authentication: Authentication, now: Long): String {
         // 권한들 가져오기
         val authorities = authentication.authorities
                 .joinToString(",") { it.authority }
@@ -95,7 +94,7 @@ class JwtProvider(
         return Jwts.builder()
                 .setSubject(authentication.name)            // payload "sub": "name"
                 .claim(AUTHORITIES_KEY, authorities)        // payload "auth": "ROLE_USER"
-                .setExpiration(accessTokenExpiresIn)        // payload "exp": 1516239022
+                .setExpiration(Date(now + ACCESS_TOKEN_EXPIRE_TIME))        // payload "exp": 1516239022
                 .signWith(key, SignatureAlgorithm.HS512)    // header "alg": "HS512"
                 .compact()
     }
