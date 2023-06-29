@@ -24,7 +24,7 @@ class AmazonS3Service(
 
         validateFileExists(multipartFile)
 
-        val fileName = createFileName(requireNotNull(multipartFile.originalFilename))
+        val fileName: String = createFileName(requireNotNull(multipartFile.originalFilename))
         val objectMetadata = ObjectMetadata()
         objectMetadata.contentType = multipartFile.contentType
 

@@ -20,15 +20,19 @@ class OpenApiConfig {
         val info = Info()
                 .title("Order API")
                 .version("v1.0.0")
-                .description("for order application frontend")
+                .description("Order API Document")
 
         return OpenAPI()  // JWT Token 인증 방식 사용
                 .addServersItem(Server().url("/"))  // 접근하는 url 과 swagger 에서 API 요청 url 통일
-                .addSecurityItem(SecurityRequirement()
+                .addSecurityItem(
+                        SecurityRequirement()
                         .addList(securitySchemeName)
                 )
-                .components(Components()
-                        .addSecuritySchemes(securitySchemeName, SecurityScheme()
+                .components(
+                        Components()
+                        .addSecuritySchemes(
+                                securitySchemeName,
+                                SecurityScheme()
                                 .name(securitySchemeName)
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")

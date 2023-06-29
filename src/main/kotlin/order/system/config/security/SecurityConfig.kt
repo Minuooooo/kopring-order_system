@@ -30,17 +30,14 @@ class SecurityConfig(
     @Throws(Exception::class)
     protected fun config(http: HttpSecurity): SecurityFilterChain =
             http
-                    .csrf {
-                        it
-                                .disable()
-                                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter::class.java)
-                    }
+                    .csrf().disable()
+
+                    .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter::class.java)
+                    .addFilterBefore(JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter::class.java)
 
                     .sessionManagement {
                         it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     }
-
-                    .addFilterBefore(JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter::class.java)
 
                     .exceptionHandling {
                         it

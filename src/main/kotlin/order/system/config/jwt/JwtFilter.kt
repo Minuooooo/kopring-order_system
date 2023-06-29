@@ -29,15 +29,17 @@ class JwtFilter(private val jwtProvider: JwtProvider) : OncePerRequestFilter() {
             SecurityContextHolder.getContext().authentication = jwtProvider.getAuthentication(jwt)
         }
 
+        filterChain.doFilter(request, response)
     }
 
     // Request Header 에서 토큰 정보를 꺼내오기
     private fun resolveToken(request: HttpServletRequest): String {
         val bearerToken = request.getHeader(AUTHENTICATION_HEADER)
 
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7)
+        return if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            bearerToken.substring(7)
+        } else {
+            "nothing"
         }
-        return "nothing"
     }
 }

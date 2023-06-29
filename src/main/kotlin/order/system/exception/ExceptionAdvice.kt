@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import java.util.*
 import javax.management.relation.RoleNotFoundException
 
-private val logger = KotlinLogging.logger {}
+private val logger = KotlinLogging.logger {}  // Kotlin 에서는 @Slf4j 사용 불가
 
 @RestControllerAdvice
 class ExceptionAdvice {
 
-    // TODO ExceptionAdvice 도메인 별로 분류 고려
+    // TODO ExceptionAdvice 도메인 별로 분류
 
     // 500 에러
     @ExceptionHandler(IllegalArgumentException::class)

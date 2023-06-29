@@ -77,5 +77,5 @@ class AuthController(
         return success(SuccessMessage.SUCCESS_TO_LOGOUT)
     }
 
-    
+
 }

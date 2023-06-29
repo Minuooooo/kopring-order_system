@@ -22,6 +22,9 @@ class JwtProvider(
         @Value("\${jwt.secret}")
         private val secretKey: String
 ) {
+
+    private val key: Key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey))
+
     companion object {
         private const val AUTHORITIES_KEY: String = "auth"
         private const val BEARER_TYPE: String = "bearer"
@@ -29,24 +32,22 @@ class JwtProvider(
         private const val REFRESH_TOKEN_EXPIRE_TIME: Long = 1000 * 60 * 60 * 24 * 7;  // 7일
     }
 
-    private val key: Key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey))
-
     fun generateTokenDto(authentication: Authentication): TokenDto {
 
         val now: Long = Date().time
         val refreshTokenExpiresIn = Date(now + REFRESH_TOKEN_EXPIRE_TIME)
 
         return TokenDto(
-                grantType = BEARER_TYPE,
-                accessToken = generateAccessToken(authentication, now),
-                refreshToken = generateRefreshToken(refreshTokenExpiresIn),
-                refreshTokenExpiresIn = refreshTokenExpiresIn.time
+                BEARER_TYPE,
+                generateAccessToken(authentication, now),
+                generateRefreshToken(refreshTokenExpiresIn),
+                refreshTokenExpiresIn.time
         )
     }
 
     fun getAuthentication(accessToken: String): Authentication {
         // 토큰 복호화
-        val claims = parseClaims(accessToken)
+        val claims: Claims = parseClaims(accessToken)
 
         if (claims[AUTHORITIES_KEY] == null) {
             throw RuntimeException("권한 정보가 없는 토큰입니다.")
@@ -87,7 +88,7 @@ class JwtProvider(
 
     fun generateAccessToken(authentication: Authentication, now: Long): String {
         // 권한들 가져오기
-        val authorities = authentication.authorities
+        val authorities: String = authentication.authorities
                 .joinToString(",") { it.authority }
 
         // Access Token 생성

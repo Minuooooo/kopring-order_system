@@ -9,11 +9,11 @@ import org.springframework.http.HttpStatus.*
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder("isSuccess", "code", "message", "result")
 @Schema(description = "This is response message from server")
-data class Response(
-        val isSuccess: Boolean,
-        val code: Int,
-        val message: String,
-        val result: Any?
+data class Response(  // TODO code, data 만을 활용해 custom response 구현
+        private val isSuccess: Boolean,
+        private val code: Int,
+        private val message: String,
+        private val data: Any?
 ) {
     companion object {
         fun success(message: String): Response = Response(true, OK.value(), message, null);

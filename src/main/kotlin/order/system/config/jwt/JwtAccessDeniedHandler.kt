@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class JwtAccessDeniedHandler : AccessDeniedHandler {
     @Throws(IOException::class, ServletException::class)
-    override fun handle(request: HttpServletRequest, response: HttpServletResponse, accessDeniedException: AccessDeniedException?) {
+    override fun handle(request: HttpServletRequest, response: HttpServletResponse, accessDeniedException: AccessDeniedException) {
         // 필요한 권한이 없이 접근하려 할 때 403
         response.sendError(HttpServletResponse.SC_FORBIDDEN)
     }

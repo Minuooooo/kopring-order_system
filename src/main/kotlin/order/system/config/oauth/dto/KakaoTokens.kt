@@ -7,17 +7,17 @@ data class KakaoTokens(
         val accessToken: String,
 
         @JsonProperty("refresh_token")
-        private val refreshToken: String,
+        val refreshToken: String,
 
         @JsonProperty("token_type")
-        private val tokenType: String,
+        val tokenType: String,
 
         @JsonProperty("expires_in")
-        private val expiresIn: String,
+        val expiresIn: String,
 
         @JsonProperty("refresh_token_expires_in")
-        private val refreshTokenExpiresIn: String,
+        val refreshTokenExpiresIn: String,
 
         @JsonProperty("scope")
-        private val scope: String
+        val scope: String
 )

@@ -4,7 +4,6 @@ class SuccessMessage {
     companion object {
         const val SUCCESS = "요청에 성공했습니다"
         const val SUCCESS_TO_GET_EMAIL = "이메일을 찾는데 성공했습니다."
-        const val SUCCESS_TO_VALIDATE_DUPLICATE = "중복 확인에 성공했습니다."
         const val SUCCESS_TO_SIGN_UP = "회원가입에 성공했습니다."
         const val SUCCESS_TO_SIGN_IN = "로그인에 성공했습니다."
         const val SUCCESS_TO_LOGOUT = "로그아웃에 성공했습니다."

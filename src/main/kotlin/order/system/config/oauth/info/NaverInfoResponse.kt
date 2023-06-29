@@ -11,7 +11,6 @@ class NaverInfoResponse(
 ) : OAuthInfoResponse {
 
     companion object {
-
         @JsonIgnoreProperties(ignoreUnknown = true)
         data class Response(
                 val email: String,

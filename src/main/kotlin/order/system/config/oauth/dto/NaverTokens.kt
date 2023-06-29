@@ -7,11 +7,11 @@ data class NaverTokens(
         val accessToken: String,
 
         @JsonProperty("refresh_token")
-        private val refreshToken: String,
+        val refreshToken: String,
 
         @JsonProperty("token_type")
-        private val tokenType: String,
+        val tokenType: String,
 
         @JsonProperty("expires_in")
-        private val expiresIn: String
+        val expiresIn: String
 )
