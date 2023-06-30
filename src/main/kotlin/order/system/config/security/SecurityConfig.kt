@@ -45,9 +45,11 @@ class SecurityConfig(
                                 .accessDeniedHandler(jwtAccessDeniedHandler)
                     }
 
-                    .authorizeHttpRequests{
+                    .authorizeHttpRequests {
                         it
-                                .antMatchers("/swagger-ui/**", "/api-docs/**", "/v1/**", "/api")  // 인증하지 않을 url
+                                .antMatchers("/swagger-ui/**", "/api-docs/**", "/v1/**", "/api",
+                                        "/sign-up/**", "/sign-in/**"
+                                )  // 인증하지 않을 url
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
