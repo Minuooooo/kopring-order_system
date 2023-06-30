@@ -59,6 +59,19 @@ class AuthService(
         redisService.deleteValues("RT: ${member.username}")
     }
 
+    fun reissue(tokenRequestDto: TokenRequestDto): TokenResponseDto {
+
+        validateRefreshToken(tokenRequestDto)
+        val authentication: Authentication = jwtProvider.getAuthentication(tokenRequestDto.accessToken)
+        validateRefreshTokenOwner(authentication, tokenRequestDto)
+
+        val tokenDto: TokenDto = getReadyForAuthorize(authentication)
+        return TokenResponseDto(
+                tokenDto.accessToken,
+                tokenDto.refreshToken
+        )
+    }
+
     private fun validateSignUpInfo(usernameToValidate: String) {
         if (memberRepository.existsByUsername(usernameToValidate))
             throw UsernameAlreadyExistsException(usernameToValidate)
@@ -89,5 +102,17 @@ class AuthService(
                 Duration.ofMillis(tokenDto.refreshTokenExpiresIn)
         )
         return tokenDto
+    }
+
+    private fun validateRefreshToken(tokenRequestDto: TokenRequestDto) {
+        if (!jwtProvider.validateToken(tokenRequestDto.refreshToken)) {
+            throw RuntimeException("Refresh Token 이 유효하지 않습니다.")
+        }
+    }
+
+    private fun validateRefreshTokenOwner(authentication: Authentication, tokenRequestDto: TokenRequestDto) {
+        if (!redisService.getValues("RT: ${authentication.name}").equals(tokenRequestDto.refreshToken)) {
+            throw RuntimeException("토큰의 유저 정보가 일치하지 않습니다.")
+        }
     }
 }
