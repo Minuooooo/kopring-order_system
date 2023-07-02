@@ -17,11 +17,21 @@ import kotlin.jvm.Throws
 
 @Configuration
 class SecurityConfig(
-        private val jwtProvider: JwtProvider,
-        private val corsFilter: CorsFilter,
-        private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
-        private val jwtAccessDeniedHandler: JwtAccessDeniedHandler
+    private val jwtProvider: JwtProvider,
+    private val corsFilter: CorsFilter,
+    private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
+    private val jwtAccessDeniedHandler: JwtAccessDeniedHandler
 ) {
+
+    companion object {
+        private val AUTH_WHITELIST = arrayOf(
+            "/swagger-ui/**",
+            "/api-docs/**",
+            "/api",
+            "/sign-up/**",
+            "/sign-in/**"
+        )
+    }
 
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
@@ -29,31 +39,29 @@ class SecurityConfig(
     @Bean
     @Throws(Exception::class)
     protected fun config(http: HttpSecurity): SecurityFilterChain =
-            http
-                    .csrf().disable()
+        http
+            .csrf().disable()
 
-                    .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter::class.java)
-                    .addFilterBefore(JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter::class.java)
 
-                    .sessionManagement {
-                        it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    }
+            .sessionManagement {
+                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            }
 
-                    .exceptionHandling {
-                        it
-                                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                                .accessDeniedHandler(jwtAccessDeniedHandler)
-                    }
+            .exceptionHandling {
+                it
+                    .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                    .accessDeniedHandler(jwtAccessDeniedHandler)
+            }
 
-                    .authorizeHttpRequests {
-                        it
-                                .antMatchers("/swagger-ui/**", "/api-docs/**", "/v1/**", "/api",
-                                        "/sign-up/**", "/sign-in/**"
-                                )  // 인증하지 않을 url
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated()
-                    }
+            .authorizeHttpRequests {
+                it
+                    .antMatchers(*AUTH_WHITELIST)  // 인증하지 않을 url, doFilterInternal 는 실행됨
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+            }
 
-                    .build()
+            .build()
 }
