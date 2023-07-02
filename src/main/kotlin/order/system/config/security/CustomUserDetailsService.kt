@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service
 import kotlin.jvm.Throws
 
 @Service
-class CustomUserDetailsService(private val memberRepository: MemberRepository) : UserDetailsService {
+class CustomUserDetailsService(
+    private val memberRepository: MemberRepository,
+    private val passwordEncoder: PasswordEncoder
+) : UserDetailsService {
 
     // AuthenticationManagerBuilder.getObject().authenticated() 실행할 때 호출
     @Throws(UsernameNotFoundException::class)
@@ -22,5 +25,6 @@ class CustomUserDetailsService(private val memberRepository: MemberRepository) :
                     ?: throw UsernameNotFoundException("$username -> 데이터베이스에서 찾을 수 없습니다.")
 
     fun createUserDetails(member: Member): UserDetails =
-            User(member.username, member.id.toString(), setOf(SimpleGrantedAuthority(member.authority.toString())))
+            // password 위치에는 encode 된 값이 있어야 함
+            User(member.username, passwordEncoder.encode(member.id.toString()), setOf(SimpleGrantedAuthority(member.authority.toString())))
 }

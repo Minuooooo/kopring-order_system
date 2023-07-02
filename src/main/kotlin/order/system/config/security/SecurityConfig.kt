@@ -28,8 +28,8 @@ class SecurityConfig(
             "/swagger-ui/**",
             "/api-docs/**",
             "/api",
-            "/sign-up/**",
-            "/sign-in/**"
+            "/api/auth/sign-up/**",
+            "/api/auth/sign-in/**"
         )
     }
 
